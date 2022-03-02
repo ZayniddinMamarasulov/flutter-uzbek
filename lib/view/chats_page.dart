@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
+
 class ChatsPage extends StatefulWidget {
   const ChatsPage({Key? key}) : super(key: key);
   static final String id="chat_page";
@@ -17,30 +18,28 @@ class _ChatsPageState extends State<ChatsPage> {
           //2
           SliverAppBar(
             pinned: true,
-            expandedHeight: 250.0,
+            expandedHeight: 88,
+            backgroundColor: AppColors.containerFiveColor,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text('Goa', textScaleFactor: 1),
-              background: Image.asset(
-                'assets/images/beach.png',
-                fit: BoxFit.fill,
-              ),
+              title: Text('Chats',style: TextStyle(color: Colors.black), textScaleFactor: 1),
             ),
           ),
           //3
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-                  (_, int index) {
-                return ListTile(
-                  leading: Container(
-                      padding: EdgeInsets.all(8),
-                      width: 100,
-                      child: Placeholder()),
-                  title: Text('Place ${index + 1}', textScaleFactor: 2),
-                );
-              },
-              childCount: 20,
-            ),
-          ),
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                Container(
+                  height: 24,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: AppColors.containerFiveColor
+                  ),
+                  child: Center(child: Text("Now")),
+                ),
+              ],
+            )
+          )
         ],
       ),
     );
