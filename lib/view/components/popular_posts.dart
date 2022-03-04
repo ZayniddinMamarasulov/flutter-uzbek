@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
+import 'package:flutter_uzbek/view/components/popular_item.dart';
 import 'package:flutter_uzbek/view/components/promo.dart';
 import 'package:flutter_uzbek/view/components/promo_header.dart';
 import 'package:flutter_uzbek/view/components/recent_posts.dart';
+import 'package:flutter_uzbek/view/popular_posts_page.dart';
 class PopularPost extends StatefulWidget {
   const PopularPost({Key? key}) : super(key: key);
 
@@ -27,7 +29,7 @@ class _PopularPostState extends State<PopularPost> {
                   children: [
                     TextButton(
                         onPressed: (){
-
+                          Navigator.pushNamed(context, PopularPostsPAge.id);
                         },
                         child: Row(
                           children: [

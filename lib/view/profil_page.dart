@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/view/components/popular_posts.dart';
+import 'package:flutter_uzbek/view/my_proil_page.dart';
 class ProfilPage extends StatefulWidget {
   const ProfilPage({Key? key}) : super(key: key);
   static final String id="profil_page";
@@ -26,15 +27,20 @@ class _ProfilPageState extends State<ProfilPage> {
             ),
             backgroundColor: AppColors.containerFourColor,
             actions:  [
-              CircleAvatar(
-                radius: 22,
-                backgroundColor: Colors.black,
-                child: Center(
-                  child: Container(
-                    child: Image(
-                      height: 28,
-                      width: 24,
-                      image: AssetImage("assets/icons/person.png"),
+              InkWell(
+                onTap: (){
+                  Navigator.pushNamed(context, MyProfilPage.id);
+                },
+                child: CircleAvatar(
+                  radius: 22,
+                  backgroundColor: Colors.black,
+                  child: Center(
+                    child: Container(
+                      child: Image(
+                        height: 28,
+                        width: 24,
+                        image: AssetImage("assets/icons/person.png"),
+                      ),
                     ),
                   ),
                 ),
