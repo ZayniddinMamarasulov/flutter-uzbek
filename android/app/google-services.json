@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "394708819581",
+    "project_id": "flutteruzbek",
+    "storage_bucket": "flutteruzbek.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394708819581:android:19c70e70860065e3e19b14",
+        "android_client_info": {
+          "package_name": "com.example.flutter_uzbek"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394708819581-8ague3497seso45s41f206s4s8s93u82.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4vK-QfFhL-UtivuqE6vRekt8qM5Hn7i8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394708819581-8ague3497seso45s41f206s4s8s93u82.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

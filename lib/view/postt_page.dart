@@ -49,7 +49,7 @@ class _PosttPageState extends State<PosttPage> {
                 ),
                 Padding(
                     padding: EdgeInsets.all(10),
-                    child: Text(infor!.text,style: TextStyle(color: Colors.black,fontSize: 32,fontWeight: FontWeight.w700),
+                    child: Text(infor.text,style: TextStyle(color: Colors.black,fontSize: 32,fontWeight: FontWeight.w700),
                     )
                 ),
                 SizedBox(height: 32,),
