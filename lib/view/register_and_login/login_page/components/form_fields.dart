@@ -17,6 +17,7 @@ class FormFields extends StatefulWidget {
 
 class _FormFieldsState extends State<FormFields> {
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   String email = "";
   String password = "";
@@ -40,6 +41,9 @@ class _FormFieldsState extends State<FormFields> {
           passwordFormField(context),
           const ForgotPasswordButton(),
           ErrorText(errorText: errorText),
+          _isLoading
+              ? Center(child: const CircularProgressIndicator())
+              : Container(),
           LoginButton(
             func: _func,
           ),
@@ -66,13 +70,16 @@ class _FormFieldsState extends State<FormFields> {
   }
 
   _signIn() async {
+    showLoader(true);
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-
-      Navigator.pushNamed(context, HomePage.id);
-
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        showLoader(false);
+        Navigator.pushNamedAndRemoveUntil(context, HomePage.id, (r) => false);
+      });
     } on FirebaseAuthException catch (e) {
+      showLoader(false);
       if (e.code == 'user-not-found') {
         _showMessage('No user found for that email.');
         print('No user found for that email.');
@@ -81,8 +88,21 @@ class _FormFieldsState extends State<FormFields> {
         print('Wrong password provided for that user.');
       }
     } catch (e) {
+      showLoader(false);
       _showMessage(e);
       print(e);
+    }
+  }
+
+  void showLoader(bool isLoad) {
+    if (isLoad) {
+      setState(() {
+        _isLoading = true;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 

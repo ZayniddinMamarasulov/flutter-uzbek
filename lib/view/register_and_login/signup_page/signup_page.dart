@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'components/login_text_button.dart';
-
-
 import 'components/form_fields.dart';
 import 'components/sign_up_text.dart';
 
@@ -34,7 +32,7 @@ class _SignupPageState extends State<SignupPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SignUpText(),
-              FormFields(),
+              SignUpFormFields(),
               const LoginTextButton(),
             ],
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/view/components/popular_posts.dart';
-import 'package:flutter_uzbek/view/my_profil_page.dart';
+import 'package:flutter_uzbek/view/my_profile_page.dart';
 
 class ProfilPage extends StatefulWidget {
   const ProfilPage({Key? key}) : super(key: key);
@@ -30,7 +30,7 @@ class _ProfilPageState extends State<ProfilPage> {
                 actions:  [
                   InkWell(
                     onTap: (){
-                      Navigator.pushNamed(context, MyProfilPage.id);
+                      Navigator.pushNamed(context, MyProfilePage.id);
                     },
                     child: CircleAvatar(
                       radius: 22,

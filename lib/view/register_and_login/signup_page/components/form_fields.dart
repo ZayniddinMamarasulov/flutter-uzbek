@@ -1,19 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_uzbek/model/user.dart';
 
+import '../../../home_page.dart';
 import 'create_button.dart';
 import 'custom_container_for_forms.dart';
 import 'custom_input_decoration.dart';
 import 'error_text.dart';
 
-class FormFields extends StatefulWidget {
-  FormFields({Key? key}) : super(key: key);
+class SignUpFormFields extends StatefulWidget {
+  const SignUpFormFields({Key? key}) : super(key: key);
 
   @override
-  State<FormFields> createState() => _FormFieldsState();
+  State<SignUpFormFields> createState() => _SignUpFormFieldsState();
 }
 
-class _FormFieldsState extends State<FormFields> {
+class _SignUpFormFieldsState extends State<SignUpFormFields> {
   final _formKey = GlobalKey<FormState>();
 
   String name = "";
@@ -66,8 +69,16 @@ class _FormFieldsState extends State<FormFields> {
 
   _createAccount() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: pass);
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: pass)
+          .then((current) {
+        MyUser user = MyUser(
+            id: current.user?.uid,
+            fullName: name,
+            email: email,
+            userRole: 'user');
+        _saveUserCredentials(user);
+      });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         _showMessage("The password provided is too weak.");
@@ -79,6 +90,20 @@ class _FormFieldsState extends State<FormFields> {
     } catch (e) {
       _showMessage(e);
       print(e);
+    }
+  }
+
+  _saveUserCredentials(MyUser user) async {
+    final CollectionReference userCollections =
+        FirebaseFirestore.instance.collection('users');
+
+    try {
+      final userDoc = userCollections.doc(user.id);
+      await userDoc.set(user.toJson()).then((value) {
+        Navigator.pushNamedAndRemoveUntil(context, HomePage.id, (r) => false);
+      });
+    } catch (e) {
+      print("user-collection-exception: $e");
     }
   }
 

@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/view/add_post_page.dart';
 import 'package:flutter_uzbek/view/components/popular_item.dart';
 import 'package:flutter_uzbek/view/home_page.dart';
-import 'package:flutter_uzbek/view/my_profil_page.dart';
+import 'package:flutter_uzbek/view/my_profile_page.dart';
 import 'package:flutter_uzbek/view/popular_posts_page.dart';
 import 'package:flutter_uzbek/view/postt_page.dart';
 import 'package:flutter_uzbek/view/register_and_login/auth_page/auth_page.dart';
@@ -16,9 +17,14 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,10 +32,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const AuthPage(),
+      home: FirebaseAuth.instance.currentUser?.uid == null
+          ? AuthPage()
+          : HomePage(),
       routes: {
         HomePage.id: (context) => HomePage(),
-        MyProfilPage.id: (context) => MyProfilPage(),
+        MyProfilePage.id: (context) => MyProfilePage(),
         PopularItem.id: (context) => PopularItem(),
         PopularPostsPAge.id: (context) => PopularPostsPAge(),
         PosttPage.id: (context) => PosttPage(),
@@ -39,5 +47,9 @@ class MyApp extends StatelessWidget {
         AddPostPage.id: (context) => AddPostPage(),
       },
     );
+  }
+
+  Future<bool> _isUserLoggedIn() async {
+    return FirebaseAuth.instance.currentUser != null;
   }
 }
