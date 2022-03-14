@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_uzbek/view/add_post_page.dart';
 import 'package:flutter_uzbek/view/components/popular_item.dart';
 import 'package:flutter_uzbek/view/home_page.dart';
 import 'package:flutter_uzbek/view/my_profil_page.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         AuthPage.id: (context) => AuthPage(),
         SignupPage.id: (context) => SignupPage(),
         LoginPage.id: (context) => LoginPage(),
+        AddPostPage.id: (context) => AddPostPage(),
       },
     );
   }

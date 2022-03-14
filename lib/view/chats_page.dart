@@ -12,10 +12,13 @@ class ChatsPage extends StatefulWidget {
 }
 
 class _ChatsPageState extends State<ChatsPage> {
+  final now = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.containerFiveColor,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

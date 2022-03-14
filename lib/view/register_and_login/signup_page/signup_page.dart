@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'components/login_text_button.dart';
 
-import 'components/app_bar.dart';
+
 import 'components/form_fields.dart';
 import 'components/sign_up_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -21,7 +20,13 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar: AppBar(
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 22.0),
