@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/model/user.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../home_page.dart';
 import 'create_button.dart';
@@ -18,14 +22,18 @@ class SignUpFormFields extends StatefulWidget {
 
 class _SignUpFormFieldsState extends State<SignUpFormFields> {
   final _formKey = GlobalKey<FormState>();
+  final _picker = ImagePicker();
+  File _selectedImage = File('');
 
   String name = "";
   String email = "";
   String pass = "";
+  String userimageUrl="";
 
   bool passError = false;
   bool nameError = false;
   bool emailError = false;
+  bool _isLoading = false;
 
   String? errorText;
 
@@ -37,6 +45,55 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
       key: _formKey,
       child: Column(
         children: [
+          Container(
+            child: _isLoading
+                ? Container(
+              alignment: Alignment.center,
+              child: CircularProgressIndicator(),
+            )
+                : Container(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      getImage();
+                    },
+                    child: _selectedImage.path != ''
+                        ? Container(
+                      height: 150,
+                      margin:
+                      EdgeInsets.symmetric(horizontal: 16),
+                      width: MediaQuery.of(context).size.width,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Image.file(
+                          _selectedImage,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                        : Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16),
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                      child: const Icon(
+                        Icons.add_a_photo_outlined,
+                        color: Colors.black45,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           nameFormField(),
           emailFormField(),
           passwordFormField(context),
@@ -68,6 +125,19 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
   }
 
   _createAccount() async {
+
+    setState(() {
+      _isLoading=true;
+    });
+    var firebaseStorageRef = FirebaseStorage.instance
+        .ref()
+        .child('profil_images')
+        .child('$name.jpg');
+    final task = firebaseStorageRef.putFile(_selectedImage);
+
+    var downloadUrl = await (await task).ref.getDownloadURL();
+    print('this is url $downloadUrl');
+
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: pass)
@@ -76,7 +146,9 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
             id: current.user?.uid,
             fullName: name,
             email: email,
-            userRole: 'user');
+            userRole: 'user',
+            userimageUrl: downloadUrl
+        );
         _saveUserCredentials(user);
       });
     } on FirebaseAuthException catch (e) {
@@ -247,4 +319,17 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
       _showPassword = !_showPassword;
     });
   }
+
+  Future getImage() async {
+    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _selectedImage = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
 }

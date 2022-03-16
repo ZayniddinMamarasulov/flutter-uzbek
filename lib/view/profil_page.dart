@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
+import 'package:flutter_uzbek/model/user.dart';
 import 'package:flutter_uzbek/view/components/popular_posts.dart';
 import 'package:flutter_uzbek/view/my_profile_page.dart';
 
@@ -12,6 +15,7 @@ class ProfilPage extends StatefulWidget {
 }
 
 class _ProfilPageState extends State<ProfilPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,13 +40,16 @@ class _ProfilPageState extends State<ProfilPage> {
                       radius: 22,
                       backgroundColor: Colors.black,
                       child: Center(
-                        child: Container(
-                          child: Image(
-                            height: 28,
-                            width: 24,
-                            image: AssetImage("assets/icons/person.png"),
-                          ),
+                        child: FutureBuilder(
+                          future: getCurrentUser(),
+                          builder: (BuildContext context, AsyncSnapshot<MyUser> snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+                            return imageUI(snapshot.data!);
+                          },
                         ),
+
                       ),
                     ),
                   ),
@@ -54,4 +61,20 @@ class _ProfilPageState extends State<ProfilPage> {
         )
     );
   }
+
+  Widget imageUI(MyUser user){
+    return Container(
+      child: CircleAvatar(child: Image.network(user.userimageUrl!)));
+  }
+  Future<MyUser> getCurrentUser() async {
+    final id = FirebaseAuth.instance.currentUser?.uid;
+
+    final currentUser =
+    await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+    final userData = currentUser.data();
+
+    return MyUser.fromData(userData!);
+  }
+
 }

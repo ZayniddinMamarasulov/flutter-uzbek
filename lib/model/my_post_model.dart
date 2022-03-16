@@ -1,13 +1,15 @@
 class MyPosts{
   String? title;
   String? text;
+  String? imageUrl;
 
 
-  MyPosts(this.title,this.text);
+  MyPosts(this.title,this.text,this.imageUrl);
 
   MyPosts.fromJson(Map<String, dynamic> json){
     title=json['title'];
     text=json['text'];
+    imageUrl=json['imageUrl'];
 
   }
 
@@ -15,6 +17,7 @@ class MyPosts{
     final Map<String,dynamic> data=new Map<String,dynamic>();
     data['title']=this.title;
     data['text']=this.text;
+    data['imageUrl']=this.imageUrl;
     return data;
   }
 }

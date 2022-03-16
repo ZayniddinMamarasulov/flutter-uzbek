@@ -116,7 +116,11 @@ class _PostPageState extends State<PostPage> {
             Expanded(
                 child: Row(
                   children: [
-                    Image(image: AssetImage("assets/icons/img5.png"))
+                    Container(
+                      height: 400,
+                      width: 180,
+                      child: Image.network(mypost.imageUrl!),
+                    )
                   ],
                 )
             )
@@ -125,5 +129,4 @@ class _PostPageState extends State<PostPage> {
       ),
     );
   }
-
 }

@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/model/user.dart';
 import 'package:flutter_uzbek/view/register_and_login/auth_page/auth_page.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'components/payment.dart';
 
@@ -16,6 +20,11 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
+  final _picker = ImagePicker();
+
+  String name="";
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +65,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
     );
   }
 
+
+
   Widget initUI(MyUser user) {
     return Padding(
       padding: EdgeInsets.all(10),
@@ -63,27 +74,32 @@ class _MyProfilePageState extends State<MyProfilePage> {
         children: [
           Column(
             children: [
-              Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.black),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Center(
-                      child: Image(
-                        image: AssetImage("assets/icons/image11.png"),
+              InkWell(
+                onTap: (){
+                  //getImage();
+
+                },
+                child: Container(
+                  height: 80,
+                  width: 80,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.black),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: CircleAvatar(child: Image.network(user.userimageUrl!)),
+
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 4),
               Text(
-                user.fullName,
+                user.fullName!,
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -91,7 +107,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               ),
               SizedBox(height: 4),
               Text(
-                user.email,
+                user.email!,
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -181,7 +197,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         color: Colors.blue,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
-                  ))
+                  )
+              )
             ],
           )
         ],
@@ -199,4 +216,34 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
     return MyUser.fromData(userData!);
   }
+
+
+
+  // void _create()async{
+  //   setState(() {
+  //     _isLoading=true;
+  //   });
+  //   var firebaseStorageRef = FirebaseStorage.instance
+  //       .ref()
+  //       .child('profil_images')
+  //       .child('$name.jpg');
+  //   final task = firebaseStorageRef.putFile(_selectedImage);
+  //
+  //   var downloadUrl = await (await task).ref.getDownloadURL();
+  //   print('this is url $downloadUrl');
+  // }
+
+
+  // Future getImage() async {
+  //   final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+  //
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       _selectedImage = File(pickedFile.path);
+  //     } else {
+  //       print('No image selected.');
+  //     }
+  //   });
+  // }
+
 }
