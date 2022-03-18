@@ -15,15 +15,20 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-  @override
-  Widget build(BuildContext context) {
 
-    final moviesRef = FirebaseFirestore.instance
+  CollectionReference<MyPosts> fetchPosts(){
+    return FirebaseFirestore.instance
         .collection('posts')
         .withConverter<MyPosts>(
       fromFirestore: (snapshots, _) => MyPosts.fromJson(snapshots.data()!),
       toFirestore: (post, _) => post.toJson(),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final postsRef=fetchPosts();
 
     return Scaffold(
       appBar: AppBar(
@@ -63,7 +68,7 @@ class _PostPageState extends State<PostPage> {
       toolbarHeight: 100,
     ),
       body: StreamBuilder<QuerySnapshot<MyPosts>>(
-        stream: moviesRef.snapshots(),
+        stream: postsRef.snapshots(),
         builder: (context,snapshot){
           if(snapshot.hasError){
             return Center(
@@ -76,7 +81,23 @@ class _PostPageState extends State<PostPage> {
             return ListView.builder(
                 itemCount: snapshot.data?.size,
                 itemBuilder: (context,index){
-                  return postVidget(snapshot.data!.docs[index].data(), index);
+                  final item=snapshot.data!.docs[index].data();
+                  return Dismissible(
+                    key: Key(item.text!),
+                    onDismissed: (directions){
+                      setState(() {
+                        _delete(item);
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('${item.title} dissmised'))
+                      );
+
+                    },
+                    child: postVidget(
+                        item,
+                        index
+                    ),
+                  );
                 });
         },
       ) ,
@@ -128,5 +149,19 @@ class _PostPageState extends State<PostPage> {
         ),
       ),
     );
+  }
+
+
+  void _delete(MyPosts mypost)async{
+    final FirebaseFirestore firestore=FirebaseFirestore.instance;
+    try{
+      firestore
+          .collection('posts')
+          .doc('${mypost.title?.replaceAll(" ", "_")}')
+          .delete();
+      fetchPosts();
+    }catch(e){
+      print(e);
+    }
   }
 }

@@ -64,7 +64,14 @@ class _ProfilPageState extends State<ProfilPage> {
 
   Widget imageUI(MyUser user){
     return Container(
-      child: CircleAvatar(child: Image.network(user.userimageUrl!)));
+      child: ClipOval(
+        child: Image.network(
+          user.userimageUrl,
+          width: 40,
+          height: 40,
+          fit: BoxFit.cover,
+        ),
+      ),);
   }
   Future<MyUser> getCurrentUser() async {
     final id = FirebaseAuth.instance.currentUser?.uid;

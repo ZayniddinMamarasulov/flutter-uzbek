@@ -168,9 +168,7 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
   void addMovie(){
-
     bool isValid=formKey.currentState!.validate();
-
     if(isValid){
       formKey.currentState?.save();
       _create();

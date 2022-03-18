@@ -79,23 +79,15 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   //getImage();
 
                 },
-                child: Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Colors.black),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: CircleAvatar(child: Image.network(user.userimageUrl!)),
 
-                      ),
-                    ],
+                  child: ClipOval(
+                    child: Image.network(
+                      user.userimageUrl,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
               ),
               SizedBox(height: 4),
               Text(
