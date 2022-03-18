@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CreateButton extends StatelessWidget {
-  final void Function() func;
+  final void Function(BuildContext context) func;
+
   const CreateButton({
     Key? key,
     required this.func,
@@ -13,7 +14,7 @@ class CreateButton extends StatelessWidget {
       padding: const EdgeInsets.only(top: 16.0),
       child: InkWell(
         onTap: () {
-          func();
+          func(context);
         },
         child: Container(
           alignment: Alignment.center,

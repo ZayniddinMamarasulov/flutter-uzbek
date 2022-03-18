@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_uzbek/view/home_page.dart';
 import 'forgot_password.dart';
 
 import 'create_button.dart';
@@ -58,7 +56,7 @@ class _FormFieldsState extends State<FormFields> {
     if (isValid) {
       _formKey.currentState!.save();
 
-      _signIn();
+      // _signIn();
       if (!passError && !emailError & !nameError) {
         errorText = null;
       } else {
@@ -66,31 +64,6 @@ class _FormFieldsState extends State<FormFields> {
       }
     } else {
       print('error');
-    }
-  }
-
-  _signIn() async {
-    showLoader(true);
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) {
-        showLoader(false);
-        Navigator.pushNamedAndRemoveUntil(context, HomePage.id, (r) => false);
-      });
-    } on FirebaseAuthException catch (e) {
-      showLoader(false);
-      if (e.code == 'user-not-found') {
-        _showMessage('No user found for that email.');
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        _showMessage('Wrong password provided for that user.');
-        print('Wrong password provided for that user.');
-      }
-    } catch (e) {
-      showLoader(false);
-      _showMessage(e);
-      print(e);
     }
   }
 

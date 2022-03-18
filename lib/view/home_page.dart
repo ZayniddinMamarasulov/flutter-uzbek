@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        children: [ProfilPage(), ChatsPage(), PostPage()],
+        children: [ProfilePage(), ChatsPage(), PostPage()],
         onPageChanged: (int index) {
           setState(() {
             _currentTab = index;

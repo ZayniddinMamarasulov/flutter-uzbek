@@ -1,13 +1,10 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_uzbek/model/user.dart';
+import 'package:flutter_uzbek/view_model/auth_vm.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../../../home_page.dart';
+import 'package:provider/provider.dart';
 import 'create_button.dart';
 import 'custom_container_for_forms.dart';
 import 'custom_input_decoration.dart';
@@ -28,7 +25,7 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
   String name = "";
   String email = "";
   String pass = "";
-  String userimageUrl="";
+  String userimageUrl = "";
 
   bool passError = false;
   bool nameError = false;
@@ -42,71 +39,81 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          Container(
-            child: _isLoading
-                ? Container(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(),
-            )
-                : Container(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      getImage();
-                    },
-                    child: _selectedImage.path != ''
-                        ? Container(
-                      height: 150,
-                      margin:
-                      EdgeInsets.symmetric(horizontal: 16),
-                      width: MediaQuery.of(context).size.width,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
-                        child: Image.file(
-                          _selectedImage,
-                          fit: BoxFit.cover,
+        key: _formKey,
+        child: Consumer<AuthViewModel>(builder: (context, data, child) {
+          if (data.authStatus == AuthStatus.LOADING) {
+            return const CircularProgressIndicator();
+          }
+          if (data.authStatus == AuthStatus.COMPLETED) {
+            Navigator.pop(context);
+          }
+          if (data.authStatus == AuthStatus.ERROR) {
+            return Center(child: Text(data.errorMessage ?? "ERROR"));
+          }
+          return Column(
+            children: [
+              Container(
+                child: _isLoading
+                    ? Container(
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(),
+                      )
+                    : Container(
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                getImage();
+                              },
+                              child: _selectedImage.path != ''
+                                  ? Container(
+                                      height: 150,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 16),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(6),
+                                        child: Image.file(
+                                          _selectedImage,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 16),
+                                      height: 150,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: const Icon(
+                                        Icons.add_a_photo_outlined,
+                                        color: Colors.black45,
+                                      ),
+                                    ),
+                            ),
+                          ],
                         ),
                       ),
-                    )
-                        : Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16),
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      child: const Icon(
-                        Icons.add_a_photo_outlined,
-                        color: Colors.black45,
-                      ),
-                    ),
-                  ),
-                ],
               ),
-            ),
-          ),
-          nameFormField(),
-          emailFormField(),
-          passwordFormField(context),
-          ErrorText(errorText: errorText),
-          CreateButton(
-            func: _func,
-          ),
-        ],
-      ),
-    );
+              nameFormField(),
+              emailFormField(),
+              passwordFormField(context),
+              ErrorText(errorText: errorText),
+              CreateButton(
+                func: _func,
+              ),
+            ],
+          );
+        }));
   }
 
-  void _func() {
+  void _func(context) {
     final isValid = _formKey.currentState!.validate();
 
     if (isValid) {
@@ -125,58 +132,15 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
   }
 
   _createAccount() async {
+    final authVM = Provider.of<AuthViewModel>(context, listen: false);
 
     setState(() {
-      _isLoading=true;
+      _isLoading = true;
     });
-    var firebaseStorageRef = FirebaseStorage.instance
-        .ref()
-        .child('profil_images')
-        .child('$name.jpg');
-    final task = firebaseStorageRef.putFile(_selectedImage);
 
-    var downloadUrl = await (await task).ref.getDownloadURL();
-    print('this is url $downloadUrl');
+    final downloadUrl = authVM.uploadAvatar(name, _selectedImage);
 
-    try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: pass)
-          .then((current) {
-        MyUser user = MyUser(
-            id: current.user?.uid,
-            fullName: name,
-            email: email,
-            userRole: 'user',
-            userimageUrl: downloadUrl
-        );
-        _saveUserCredentials(user);
-      });
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        _showMessage("The password provided is too weak.");
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        _showMessage("The account already exists for that email.");
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      _showMessage(e);
-      print(e);
-    }
-  }
-
-  _saveUserCredentials(MyUser user) async {
-    final CollectionReference userCollections =
-        FirebaseFirestore.instance.collection('users');
-
-    try {
-      final userDoc = userCollections.doc(user.id);
-      await userDoc.set(user.toJson()).then((value) {
-        Navigator.pushNamedAndRemoveUntil(context, HomePage.id, (r) => false);
-      });
-    } catch (e) {
-      print("user-collection-exception: $e");
-    }
+    authVM.createUser(name, email, pass, downloadUrl);
   }
 
   _showMessage(message) {
@@ -331,5 +295,4 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
       }
     });
   }
-
 }

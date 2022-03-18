@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/model/user.dart';
@@ -91,7 +88,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               ),
               SizedBox(height: 4),
               Text(
-                user.fullName!,
+                user.fullName,
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -99,7 +96,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               ),
               SizedBox(height: 4),
               Text(
-                user.email!,
+                user.email,
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,

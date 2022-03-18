@@ -6,15 +6,15 @@ import 'package:flutter_uzbek/model/user.dart';
 import 'package:flutter_uzbek/view/components/popular_posts.dart';
 import 'package:flutter_uzbek/view/my_profile_page.dart';
 
-class ProfilPage extends StatefulWidget {
-  const ProfilPage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
   static final String id="profil_page";
 
   @override
-  _ProfilPageState createState() => _ProfilPageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilPageState extends State<ProfilPage> {
+class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {

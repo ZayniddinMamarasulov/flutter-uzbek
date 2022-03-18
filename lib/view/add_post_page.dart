@@ -106,7 +106,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             validator: (value){
                               if(value!=null)
-                                if(value!.isEmpty){
+                                if(value.isEmpty){
                                   return "To'ldirilmagan";
                                 }
 
@@ -136,7 +136,7 @@ class _AddPostPageState extends State<AddPostPage> {
                               ),
                               validator: (value){
                                 if(value!=null)
-                                  if(value!.isEmpty){
+                                  if(value.isEmpty){
                                     return "To'ldirilmagan";
                                   }
 
