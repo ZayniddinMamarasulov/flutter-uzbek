@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/view_model/auth_vm.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import '../../../home_page.dart';
 import 'create_button.dart';
 import 'custom_container_for_forms.dart';
 import 'custom_input_decoration.dart';
@@ -45,7 +46,10 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
             return const CircularProgressIndicator();
           }
           if (data.authStatus == AuthStatus.COMPLETED) {
-            Navigator.pop(context);
+            Future.delayed(Duration.zero, () async {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomePage.id, (r) => false);
+            });
           }
           if (data.authStatus == AuthStatus.ERROR) {
             return Center(child: Text(data.errorMessage ?? "ERROR"));
@@ -138,7 +142,7 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
       _isLoading = true;
     });
 
-    final downloadUrl = authVM.uploadAvatar(name, _selectedImage);
+    final downloadUrl = await authVM.uploadAvatar(name, _selectedImage);
 
     authVM.createUser(name, email, pass, downloadUrl);
   }

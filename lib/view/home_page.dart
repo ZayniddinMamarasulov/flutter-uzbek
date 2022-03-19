@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/view/chats_page.dart';
 import 'package:flutter_uzbek/view/post_page.dart';
-import 'package:flutter_uzbek/view/profil_page.dart';
+import 'package:flutter_uzbek/view/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

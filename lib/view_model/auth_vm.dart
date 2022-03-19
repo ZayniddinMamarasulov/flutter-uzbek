@@ -9,6 +9,7 @@ class AuthViewModel extends ChangeNotifier {
   var _status = AuthStatus.NOT_SIGN_IN;
 
   String _errorMessage = "";
+  MyUser? _currentUser;
 
   String get errorMessage {
     return _errorMessage;
@@ -18,7 +19,11 @@ class AuthViewModel extends ChangeNotifier {
     return _status;
   }
 
-  uploadAvatar(String name, File selectedImage) async {
+  MyUser? get currentUser {
+    return _currentUser;
+  }
+
+  Future<String> uploadAvatar(String name, File selectedImage) async {
     var firebaseStorageRef = FirebaseStorage.instance
         .ref()
         .child('profil_images')
@@ -71,9 +76,11 @@ class AuthViewModel extends ChangeNotifier {
     // showLoader(true);
     try {
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: pass);
-      _status = AuthStatus.COMPLETED;
-      notifyListeners();
+          .signInWithEmailAndPassword(email: email, password: pass)
+          .then((value) {
+        _status = AuthStatus.COMPLETED;
+        notifyListeners();
+      });
     } on FirebaseAuthException catch (e) {
       // showLoader(false);
       if (e.code == 'user-not-found') {
@@ -85,6 +92,18 @@ class AuthViewModel extends ChangeNotifier {
       // showLoader(false);
       _errorMessage = e.toString();
     }
+  }
+
+  getCurrentUser() async {
+    final id = FirebaseAuth.instance.currentUser?.uid;
+
+    final currentUser =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+    final userData = currentUser.data();
+
+    _currentUser = MyUser.fromData(userData!);
+    notifyListeners();
   }
 }
 

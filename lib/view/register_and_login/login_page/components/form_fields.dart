@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../../view_model/auth_vm.dart';
+import '../../../home_page.dart';
 import 'forgot_password.dart';
 
 import 'create_button.dart';
@@ -32,22 +35,35 @@ class _FormFieldsState extends State<FormFields> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          emailFormField(),
-          passwordFormField(context),
-          const ForgotPasswordButton(),
-          ErrorText(errorText: errorText),
-          _isLoading
-              ? Center(child: const CircularProgressIndicator())
-              : Container(),
-          LoginButton(
-            func: _func,
-          ),
-        ],
-      ),
-    );
+        key: _formKey,
+        child: Consumer<AuthViewModel>(builder: (context, data, child) {
+          if (data.authStatus == AuthStatus.LOADING) {
+            return const CircularProgressIndicator();
+          }
+          if (data.authStatus == AuthStatus.COMPLETED) {
+            Future.delayed(Duration.zero, () async {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomePage.id, (r) => false);
+            });
+          }
+          if (data.authStatus == AuthStatus.ERROR) {
+            return Center(child: Text(data.errorMessage ?? "ERROR"));
+          }
+          return Column(
+            children: [
+              emailFormField(),
+              passwordFormField(context),
+              const ForgotPasswordButton(),
+              ErrorText(errorText: errorText),
+              _isLoading
+                  ? Center(child: const CircularProgressIndicator())
+                  : Container(),
+              LoginButton(
+                func: _func,
+              ),
+            ],
+          );
+        }));
   }
 
   void _func() {
@@ -56,7 +72,9 @@ class _FormFieldsState extends State<FormFields> {
     if (isValid) {
       _formKey.currentState!.save();
 
-      // _signIn();
+      final authVM = Provider.of<AuthViewModel>(context, listen: false);
+      authVM.signIn(email, password);
+
       if (!passError && !emailError & !nameError) {
         errorText = null;
       } else {
