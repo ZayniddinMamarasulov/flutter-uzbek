@@ -1,10 +1,10 @@
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+import '../view_model/post_vm.dart';
 class AddPostPage extends StatefulWidget {
   const AddPostPage({Key? key}) : super(key: key);
   static final String id="add_post_page";
@@ -177,32 +177,14 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
   void _create()async{
-
+    final authVM = Provider.of<PostViewModel>(context, listen: false);
     setState(() {
       _isLoading=true;
     });
-    var firebaseStorageRef = FirebaseStorage.instance
-        .ref()
-        .child('post_images')
-        .child('$title.jpg');
-    final task = firebaseStorageRef.putFile(_selectedImage);
-
-    var downloadUrl = await (await task).ref.getDownloadURL();
-    print('this is url $downloadUrl');
+    final downloadUrl = await authVM.uploadImage(title, _selectedImage);
 
 
-    final FirebaseFirestore firestore=FirebaseFirestore.instance;
-    try{
-      await firestore.collection('posts')
-          .doc('${title.replaceAll(" ", "_")}')
-          .set({
-        'title':'$title',
-        'text':'$text',
-        'imageUrl':downloadUrl
-      });
-    }catch(e){
-      print(e);
-    }
+    authVM.ceretePost(title,text,downloadUrl);
   }
 
   Future getImage() async {

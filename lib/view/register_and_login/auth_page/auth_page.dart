@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/view/register_and_login/signup_page/signup_page.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../main.dart';
+import '../../../view_model/them_vm.dart';
 import 'components/agreement_text.dart';
 import 'components/login_text_button.dart';
 import 'components/sign_buttons.dart';
@@ -18,6 +20,8 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   bool isLight = true;
 
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,13 +34,12 @@ class _AuthPageState extends State<AuthPage> {
               children: [
                 Align(
                   alignment: Alignment.centerRight,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.wb_sunny_rounded,
-                      color: isLight ? Colors.black : Colors.orange,
-                    ),
-                  ),
+                  child: Switch(
+                    value: false,
+                    onChanged: (newValue){
+
+                    },
+                  )
                 ),
                 const WelcomeText(),
                 SignButtons(

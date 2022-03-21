@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/view/components/popular_item.dart';
+
 class PopularPostsPAge extends StatefulWidget {
   const PopularPostsPAge({Key? key}) : super(key: key);
   static final String id="popular_posts_page";

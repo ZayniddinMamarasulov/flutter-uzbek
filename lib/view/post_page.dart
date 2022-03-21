@@ -5,6 +5,9 @@ import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/model/my_post_model.dart';
 import 'package:flutter_uzbek/view/add_post_page.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../view_model/post_vm.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({Key? key}) : super(key: key);
@@ -16,19 +19,14 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
 
-  CollectionReference<MyPosts> fetchPosts(){
-    return FirebaseFirestore.instance
-        .collection('posts')
-        .withConverter<MyPosts>(
-      fromFirestore: (snapshots, _) => MyPosts.fromJson(snapshots.data()!),
-      toFirestore: (post, _) => post.toJson(),
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
-
-    final postsRef=fetchPosts();
+    final authVM = Provider.of<PostViewModel>(context, listen: false);
+    authVM.getCurrentPost();
+    authVM.fetchPosts();
+    final postsRef=authVM.fetchPosts();
 
     return Scaffold(
       appBar: AppBar(
@@ -78,27 +76,32 @@ class _PostPageState extends State<PostPage> {
           if(!snapshot.hasData){
             return CircularProgressIndicator();
           }else
-            return ListView.builder(
-                itemCount: snapshot.data?.size,
-                itemBuilder: (context,index){
-                  final item=snapshot.data!.docs[index].data();
-                  return Dismissible(
-                    key: Key(item.text!),
-                    onDismissed: (directions){
-                      setState(() {
-                        _delete(item);
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('${item.title} dissmised'))
-                      );
+            return Consumer<PostViewModel>(
+                builder: (context, data, index){
+                  return ListView.builder(
+                      itemCount: snapshot.data?.size,
+                      itemBuilder: (context,index){
+                        final item=snapshot.data!.docs[index].data();
+                        return Dismissible(
+                          key: Key(item.text!),
+                          onDismissed: (directions){
+                            setState(() {
+                              authVM.delete(item);
+                              //_delete(item);
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('${item.title} dissmised'))
+                            );
 
-                    },
-                    child: postVidget(
-                        item,
-                        index
-                    ),
-                  );
-                });
+                          },
+                          child: postVidget(
+                              item,
+                              index
+                          ),
+                        );
+                      });
+                }
+            );
         },
       ) ,
       floatingActionButton: FloatingActionButton(
@@ -149,19 +152,5 @@ class _PostPageState extends State<PostPage> {
         ),
       ),
     );
-  }
-
-
-  void _delete(MyPosts mypost)async{
-    final FirebaseFirestore firestore=FirebaseFirestore.instance;
-    try{
-      firestore
-          .collection('posts')
-          .doc('${mypost.title?.replaceAll(" ", "_")}')
-          .delete();
-      fetchPosts();
-    }catch(e){
-      print(e);
-    }
   }
 }
