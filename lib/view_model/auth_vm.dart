@@ -3,13 +3,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../model/user.dart';
 
 class AuthViewModel extends ChangeNotifier {
   var _status = AuthStatus.NOT_SIGN_IN;
+  var _signInMethod = SignInMethod.EMAIL;
 
   String _errorMessage = "";
   MyUser? _currentUser;
+  final googleSignIn = GoogleSignIn();
+  GoogleSignInAccount? _googleUser;
+
+  GoogleSignInAccount get googleUser {
+    return _googleUser!;
+  }
 
   String get errorMessage {
     return _errorMessage;
@@ -17,6 +25,10 @@ class AuthViewModel extends ChangeNotifier {
 
   AuthStatus get authStatus {
     return _status;
+  }
+
+  set authStatus(status) {
+    _status = status;
   }
 
   MyUser? get currentUser {
@@ -46,7 +58,7 @@ class AuthViewModel extends ChangeNotifier {
             email: email,
             userRole: 'user',
             userimageUrl: downloadUrl);
-        saveCredentials(user, pass);
+        saveCredentials(user, pass: pass);
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -60,13 +72,18 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  saveCredentials(MyUser user, pass) async {
+  saveCredentials(MyUser user, {pass, credential}) async {
     final CollectionReference userCollections =
         FirebaseFirestore.instance.collection('users');
     try {
       final userDoc = userCollections.doc(user.id);
       await userDoc.set(user.toJson());
-      signIn(user.email, pass);
+      if (_signInMethod == SignInMethod.EMAIL) {
+        signIn(user.email, pass);
+      } else if (_signInMethod == SignInMethod.GOOGLE) {
+        _status = AuthStatus.COMPLETED;
+        notifyListeners();
+      }
     } catch (e) {
       print("user-collection-exception: $e");
     }
@@ -105,6 +122,39 @@ class AuthViewModel extends ChangeNotifier {
     _currentUser = MyUser.fromData(userData!);
     notifyListeners();
   }
+
+  Future googleLogin() async {
+    _signInMethod = SignInMethod.GOOGLE;
+
+    final googleUser = await googleSignIn.signIn();
+    if (googleUser == null) return;
+    _googleUser = googleUser;
+
+    final googleAuth = await googleUser.authentication;
+
+    _status = AuthStatus.LOADING;
+    notifyListeners();
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    await FirebaseAuth.instance.signInWithCredential(credential);
+
+    MyUser user = MyUser(
+        id: FirebaseAuth.instance.currentUser?.uid,
+        fullName: googleUser.displayName!,
+        email: googleUser.email,
+        userRole: 'user',
+        userimageUrl: googleUser.photoUrl!);
+
+    saveCredentials(user, credential: credential);
+
+    notifyListeners();
+  }
 }
 
 enum AuthStatus { NOT_SIGN_IN, LOADING, COMPLETED, ERROR }
+
+enum SignInMethod { PHONE, EMAIL, GOOGLE }

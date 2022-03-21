@@ -5,7 +5,9 @@ import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/model/user.dart';
 import 'package:flutter_uzbek/view/register_and_login/auth_page/auth_page.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
+import '../view_model/auth_vm.dart';
 import 'components/payment.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -19,8 +21,7 @@ class MyProfilePage extends StatefulWidget {
 class _MyProfilePageState extends State<MyProfilePage> {
   final _picker = ImagePicker();
 
-  String name="";
-
+  String name = "";
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +63,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
     );
   }
 
-
-
   Widget initUI(MyUser user) {
     return Padding(
       padding: EdgeInsets.all(10),
@@ -72,19 +71,17 @@ class _MyProfilePageState extends State<MyProfilePage> {
           Column(
             children: [
               InkWell(
-                onTap: (){
+                onTap: () {
                   //getImage();
-
                 },
-
-                  child: ClipOval(
-                    child: Image.network(
-                      user.userimageUrl,
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                    ),
+                child: ClipOval(
+                  child: Image.network(
+                    user.userimageUrl,
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
                   ),
+                ),
               ),
               SizedBox(height: 4),
               Text(
@@ -177,6 +174,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
               TextButton(
                   onPressed: () {
                     FirebaseAuth.instance.signOut();
+                    final authVM =
+                        Provider.of<AuthViewModel>(context, listen: false);
+                    authVM.authStatus = AuthStatus.NOT_SIGN_IN;
+
                     Navigator.pushNamedAndRemoveUntil(
                         context, AuthPage.id, (r) => false);
                   },
@@ -186,8 +187,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         color: Colors.blue,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
-                  )
-              )
+                  ))
             ],
           )
         ],
@@ -205,34 +205,4 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
     return MyUser.fromData(userData!);
   }
-
-
-
-  // void _create()async{
-  //   setState(() {
-  //     _isLoading=true;
-  //   });
-  //   var firebaseStorageRef = FirebaseStorage.instance
-  //       .ref()
-  //       .child('profil_images')
-  //       .child('$name.jpg');
-  //   final task = firebaseStorageRef.putFile(_selectedImage);
-  //
-  //   var downloadUrl = await (await task).ref.getDownloadURL();
-  //   print('this is url $downloadUrl');
-  // }
-
-
-  // Future getImage() async {
-  //   final pickedFile = await _picker.getImage(source: ImageSource.gallery);
-  //
-  //   setState(() {
-  //     if (pickedFile != null) {
-  //       _selectedImage = File(pickedFile.path);
-  //     } else {
-  //       print('No image selected.');
-  //     }
-  //   });
-  // }
-
 }
