@@ -13,7 +13,6 @@ import 'package:flutter_uzbek/view/register_and_login/signup_page/signup_page.da
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_uzbek/view/settings/localithation_page.dart';
 import 'package:flutter_uzbek/view/settings/settings_page.dart';
-import 'package:flutter_uzbek/view/settings/theme_page.dart';
 import 'package:flutter_uzbek/view_model/auth_vm.dart';
 import 'package:flutter_uzbek/view_model/post_vm.dart';
 import 'package:flutter_uzbek/view_model/them_vm.dart';
@@ -92,7 +91,6 @@ class _MyAppState extends State<MyApp> {
             AddPostPage.id: (context) => AddPostPage(),
             SearchPage.id: (context) => SearchPage(),
             LocalithationPage.id: (context) => LocalithationPage(),
-            ThemePage.id: (context) => ThemePage(),
           },
         );
       }
