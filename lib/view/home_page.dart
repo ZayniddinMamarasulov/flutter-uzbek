@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
@@ -28,7 +29,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        children: [ProfilePage(), ChatsPage(), PostPage()],
+        children: [
+          ProfilePage(),
+          ChatsPage(),
+          PostPage()
+        ],
         onPageChanged: (int index) {
           setState(() {
             _currentTab = index;
@@ -49,19 +54,19 @@ class _HomePageState extends State<HomePage> {
                 AssetImage("assets/icons/img1.png"),
                 size: 32,
               ),
-              label: "Home"),
+              label: "Home".tr()),
           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage("assets/icons/img2.png"),
                 size: 32,
               ),
-              label: "Chats"),
+              label: "Chats".tr()),
           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage("assets/icons/img3.png"),
                 size: 32,
               ),
-              label: "My post"),
+              label: "My post".tr()),
         ],
       ),
     );

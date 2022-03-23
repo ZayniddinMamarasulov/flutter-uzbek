@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 class PromoHeader extends StatefulWidget {
   const PromoHeader({Key? key}) : super(key: key);
@@ -18,9 +19,9 @@ class _PromoHeaderState extends State<PromoHeader> {
                 child: Column(
                   children: [
                     Text(
-                      "Promo Header",style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w700),
+                      "Promo Header".tr(),style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w700),
                     ),
-                    Text("Short text description",style: TextStyle(color: Colors.grey,fontSize: 17,fontWeight: FontWeight.w400),),
+                    Text("Short text description".tr(),style: TextStyle(color: Colors.grey,fontSize: 17,fontWeight: FontWeight.w400),),
                     SizedBox(height: 148,),
                     Container(
                       padding: EdgeInsets.all(16),
@@ -30,7 +31,7 @@ class _PromoHeaderState extends State<PromoHeader> {
                           borderRadius: BorderRadius.circular(12),
                           color: Colors.blue
                       ),
-                      child: Center(child: const Text("Call To Action",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w600),)),
+                      child: Center(child: Text("Call To Action".tr(),style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w600),)),
                     )
                   ],
                 )

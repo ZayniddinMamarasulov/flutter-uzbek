@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/model/user.dart';
 import 'package:flutter_uzbek/view/register_and_login/auth_page/auth_page.dart';
+import 'package:flutter_uzbek/view/settings/settings_page.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -28,22 +31,22 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.containerFiveColor,
-        leading: GestureDetector(
-          onTap: () {
+        leading: IconButton(
+          onPressed: (){
             Navigator.pop(context);
           },
-          child: Image(
-            image: AssetImage('assets/icons/back.png'),
-          ),
+          icon: Icon(Icons.arrow_back_ios,color: Colors.blue,),
         ),
         title: Text(
-          'My Profile',
+          'My Profile'.tr(),
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, SearchPage.id);
+            },
             color: Colors.blue,
             icon: ImageIcon(AssetImage("assets/icons/iconn.png")),
           ),
@@ -122,9 +125,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   Expanded(
                       child: Container(
                     height: 66,
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        "Followers",
+                        "Followers".tr(),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 17,
@@ -134,9 +137,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   )),
                   Expanded(
                       child: Container(
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        "Following",
+                        "Following".tr(),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 17,
@@ -157,9 +160,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 height: 24,
                 width: 101,
                 color: Colors.green,
-                child: const Center(
+                child: Center(
                   child: Text(
-                    "PAYMENT RATE",
+                    "PAYMENT RATE".tr(),
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 10,
@@ -181,9 +184,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     Navigator.pushNamedAndRemoveUntil(
                         context, AuthPage.id, (r) => false);
                   },
-                  child: const Text(
-                    "Sign out",
-                    style: TextStyle(
+                  child:  Text(
+                    "Sign out".tr(),
+                    style: const TextStyle(
                         color: Colors.blue,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),

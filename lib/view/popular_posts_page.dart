@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/view/components/popular_item.dart';
@@ -22,7 +23,7 @@ class _PopularPostsPAgeState extends State<PopularPostsPAge> {
             },
             icon: Icon(Icons.arrow_back_ios,color: Colors.blue,)
         ),
-        title: Text("Popular posts",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w600),),
+        title: Text("Popular posts".tr(),style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w600),),
         centerTitle: true,
       ),
       body: PopularItem(),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 class Payment extends StatefulWidget {
   const Payment({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _PaymentState extends State<Payment> {
                 child: Column(
                   children: [
                     Text(
-                      "Payment rate name",style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w700),
+                      "Payment rate name".tr(),style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w700),
                     ),
                     Text("Is your plan now",style: TextStyle(color: Colors.grey,fontSize: 17,fontWeight: FontWeight.w400),),
                     SizedBox(height: 148,),
@@ -36,7 +37,7 @@ class _PaymentState extends State<Payment> {
                           borderRadius: BorderRadius.circular(12),
                           color: Colors.purple
                       ),
-                      child: Center(child: const Text("Upgrade Your Plan",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w600),)),
+                      child: Center(child:  Text("Upgrade Your Plan".tr(),style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w600),)),
                     )
                   ],
                 )

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 class RecentPosts extends StatefulWidget {
@@ -17,7 +18,7 @@ class _RecentPostsState extends State<RecentPosts> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Recent posts"),
+              Text("Recent posts".tr()),
               Row(
                 children: [
                   TextButton(
@@ -26,7 +27,7 @@ class _RecentPostsState extends State<RecentPosts> {
                       },
                       child: Row(
                         children: [
-                          Text("See all",style: TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600),),
+                          Text("See all".tr(),style: TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600),),
                           Icon(Icons.arrow_forward_ios,color: Colors.blue,)
                         ],
                       )
@@ -50,13 +51,9 @@ class _RecentPostsState extends State<RecentPosts> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Recent",style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w700),),
-                        SizedBox(height: 4,),
-                        Text("article title",style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w700),),
+                        Text("Recent\narticle title".tr(),style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w700),),
                         SizedBox(height: 8,),
-                        Text("Short text",style: TextStyle(fontSize: 17,fontWeight: FontWeight.w400,color: Colors.white),),
-                        SizedBox(height: 4,),
-                        Text("description",style: TextStyle(fontSize: 17,fontWeight: FontWeight.w400,color: Colors.white),),
+                        Text("Short text\ndescription".tr(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.w400,color: Colors.white),),
                         SizedBox(height: 36,),
                         Row(
                           children: [
@@ -89,12 +86,9 @@ class _RecentPostsState extends State<RecentPosts> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Popular article",style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w700),),
-                        SizedBox(height: 6,),
-                        Text("title",style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w700),),
+                        Text("Popular article\ntitle".tr(),style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w700),),
                         SizedBox(height: 8,),
-                        Text("Short text",style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w400),),
-                        Text("description",style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w400),),
+                        Text("Short text\ndescription".tr(),style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w400),),
                         SizedBox(height: 25,),
                         Row(
                           children: [
@@ -120,12 +114,9 @@ class _RecentPostsState extends State<RecentPosts> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Popular article",style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w700),),
-                          SizedBox(height: 6,),
-                          Text("title",style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w700),),
+                          Text("Popular article\ntitle".tr(),style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w700),),
                           SizedBox(height: 8,),
-                          Text("Short text",style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w400),),
-                          Text("description",style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w400),),
+                          Text("Short text\ndescription".tr(),style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w400),),
                           SizedBox(height: 25,),
                           Row(
                             children: [

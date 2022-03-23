@@ -22,6 +22,7 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   bool isLight = true;
+  bool isSwitched = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +48,20 @@ class _AuthPageState extends State<AuthPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Align(
-                      alignment: Alignment.centerRight,
-                      child: Switch(
-                        value: false,
-                        onChanged: (newValue) {},
-                      )),
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      onPressed: () async {
+                        context.read<ThemeServiceProvider>().changeTheme();
+                        setState(() {
+                          isLight = !isLight;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.wb_sunny_rounded,
+                        color: isLight ? Colors.black : Colors.orange,
+                      ),
+                    ),
+                  ),
                   const WelcomeText(),
                   SignButtons(
                     color: Colors.black,

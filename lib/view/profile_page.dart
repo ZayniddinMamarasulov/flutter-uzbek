@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
@@ -32,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
             centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
-                "Home",
+                "Home".tr(),
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 32,

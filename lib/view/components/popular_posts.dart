@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:flutter_uzbek/view/components/promo.dart';
@@ -23,7 +24,7 @@ class _PopularPostState extends State<PopularPost> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Popular posts"),
+                    Text("Popular posts".tr()),
                     Row(
                       children: [
                         TextButton(
@@ -32,7 +33,7 @@ class _PopularPostState extends State<PopularPost> {
                             },
                             child: Row(
                               children: [
-                                Text("See all",style: TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600),),
+                                Text("See all".tr(),style: TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600),),
                                 Icon(Icons.arrow_forward_ios,color: Colors.blue,)
                               ],
                             )
@@ -46,7 +47,6 @@ class _PopularPostState extends State<PopularPost> {
                 margin: const EdgeInsets.only(left: 20,top: 10),
                 height: 200.0,
                 child: ListView(
-                  // This next line does the trick.
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
                     InkWell(
@@ -65,12 +65,9 @@ class _PopularPostState extends State<PopularPost> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Popular article",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w700),),
-                              SizedBox(height: 6,),
-                              Text("title",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w700),),
+                              Text("Popular article\ntitle".tr(),style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w700),),
                               SizedBox(height: 8,),
-                              Text("Short text",style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w400),),
-                              Text("description",style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w400),),
+                              Text("Short text\ndescription".tr(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w400),),
                               SizedBox(height: 25,),
                               Row(
                                 children: [
@@ -101,12 +98,9 @@ class _PopularPostState extends State<PopularPost> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Popular article",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w700),),
-                              SizedBox(height: 6,),
-                              Text("title",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w700),),
+                              Text("Popular article\ntitle".tr(),style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w700),),
                               SizedBox(height: 8,),
-                              Text("Short text",style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w400),),
-                              Text("description",style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w400),),
+                              Text("Short text\ndescription".tr(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w400),),
                               SizedBox(height: 25,),
                               Row(
                                 children: [

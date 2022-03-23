@@ -1,5 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_uzbek/color/app_color.dart';
+
 class ApppBar extends StatelessWidget {
   const ApppBar({Key? key}) : super(key: key);
 
@@ -22,7 +23,7 @@ class ApppBar extends StatelessWidget {
                   },
                   child: Center(
                     child: Text(
-                      "PROMO",style: TextStyle(color: Colors.white,fontSize: 10,fontWeight: FontWeight.w500),
+                      "PROMO".tr(),style: TextStyle(color: Colors.white,fontSize: 10,fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),

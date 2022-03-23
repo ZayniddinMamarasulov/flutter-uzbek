@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,7 +31,7 @@ class _AddPostPageState extends State<AddPostPage> {
         appBar: AppBar(
           backgroundColor: AppColors.containerFiveColor,
           automaticallyImplyLeading: false,
-          title: Text('add new post',style: TextStyle(color: Colors.black,fontSize: 24,fontWeight: FontWeight.bold),),
+          title: Text('add new post'.tr(),style: TextStyle(color: Colors.black,fontSize: 24,fontWeight: FontWeight.bold),),
           leading: IconButton(
             onPressed: (){
               Navigator.pop(context);
@@ -102,7 +103,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           TextFormField(
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Title',
+                              labelText: 'Title'.tr(),
                             ),
                             validator: (value){
                               if(value!=null)
@@ -130,7 +131,7 @@ class _AddPostPageState extends State<AddPostPage> {
                               decoration: InputDecoration(
                                 contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                hintText: 'Writing Post',
+                                hintText: 'Writing Post'.tr(),
                                 hintStyle: TextStyle(color: Colors.grey.shade500),
                                 border: InputBorder.none,
                               ),
@@ -154,7 +155,7 @@ class _AddPostPageState extends State<AddPostPage> {
                               onPressed: (){
                                 addMovie();
                               },
-                              child: Text("Add",style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold),)
+                              child: Text("Add".tr(),style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.bold),)
                           )
                         ],
                       ),

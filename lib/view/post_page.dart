@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/color/app_color.dart';
@@ -35,13 +36,13 @@ class _PostPageState extends State<PostPage> {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("My Posts",style: TextStyle(color: Colors.black,fontSize: 32,fontWeight: FontWeight.w700),),
+          Text("My Posts".tr(),style: TextStyle(color: Colors.black,fontSize: 32,fontWeight: FontWeight.w700),),
           Container(
             height: 36,
             width: double.infinity,
             child: CupertinoTextField(
               keyboardType: TextInputType.text,
-              placeholder: 'Search',
+              placeholder: 'Search'.tr(),
               placeholderStyle:const TextStyle(
                 color: Color(0xffC4C6CC),
                 fontSize: 14.0,

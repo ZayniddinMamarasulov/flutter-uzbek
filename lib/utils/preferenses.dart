@@ -1,20 +1,16 @@
-// import 'dart:convert';
-//
-// import 'package:news_app/models/news.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-//
-// class PreferenceService {
-//   void saveBookmarks(List<News> news) async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     // prefs.clear();
-//     String bookmarks = jsonEncode(news);
-//     prefs.setString('bookmarks', bookmarks);
-//   }
-//
-//   Future<List<News>> getBookmarks() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     var res = prefs.getString('bookmarks') ?? "";
-//     List jsonResponse = json.decode(res);
-//     return jsonResponse.map((news) => News.fromJson(news)).toList();
-//   }
-// }
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+class DarkThemePreference {
+  static const THEME_STATUS = "THEMESTATUS";
+
+  setDarkTheme(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(THEME_STATUS, value);
+  }
+
+  Future<bool> getTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(THEME_STATUS) ?? false;
+  }
+}
