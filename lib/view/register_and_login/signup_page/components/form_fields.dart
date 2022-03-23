@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uzbek/view_model/auth_vm.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +12,7 @@ import 'create_button.dart';
 import 'custom_container_for_forms.dart';
 import 'custom_input_decoration.dart';
 import 'error_text.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class SignUpFormFields extends StatefulWidget {
   const SignUpFormFields({Key? key}) : super(key: key);
@@ -36,6 +39,8 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
   String? errorText;
 
   bool _showPassword = false;
+
+  String? avatarPathWeb;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +75,7 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                getImage();
+                                kIsWeb ? getImageWeb() : getImage();
                               },
                               child: _selectedImage.path != ''
                                   ? Container(
@@ -142,9 +147,12 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
       _isLoading = true;
     });
 
-    final downloadUrl = await authVM.uploadAvatar(name, _selectedImage);
-
-    authVM.createUser(name, email, pass, downloadUrl);
+    if (kIsWeb) {
+      authVM.createUser(name, email, pass, avatarPathWeb);
+    } else {
+      final downloadUrl = await authVM.uploadAvatar(name, _selectedImage);
+      authVM.createUser(name, email, pass, downloadUrl);
+    }
   }
 
   _showMessage(message) {
@@ -290,7 +298,6 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
 
   Future getImage() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
-
     setState(() {
       if (pickedFile != null) {
         _selectedImage = File(pickedFile.path);
@@ -298,5 +305,24 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
         print('No image selected.');
       }
     });
+  }
+
+  Future getImageWeb() async {
+    final result = await FilePicker.platform
+        .pickFiles(type: FileType.any, allowMultiple: false);
+
+    if (result != null && result.files.isNotEmpty) {
+      final fileBytes = result.files.first.bytes;
+      final fileName = result.files.first.name;
+
+      // upload file
+      final firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child('profil_images')
+          .child('$name.jpg');
+
+      final task = firebaseStorageRef.putData(fileBytes!);
+      avatarPathWeb = await (await task).ref.getDownloadURL();
+    }
   }
 }
