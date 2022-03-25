@@ -38,16 +38,18 @@ class _FormFieldsState extends State<FormFields> {
         key: _formKey,
         child: Consumer<AuthViewModel>(builder: (context, data, child) {
           if (data.authStatus == AuthStatus.LOADING) {
-            return const CircularProgressIndicator();
+            _isLoading = true;
           }
           if (data.authStatus == AuthStatus.COMPLETED) {
+            _isLoading = false;
             Future.delayed(Duration.zero, () async {
               Navigator.pushNamedAndRemoveUntil(
                   context, HomePage.id, (r) => false);
             });
           }
           if (data.authStatus == AuthStatus.ERROR) {
-            return Center(child: Text(data.errorMessage ?? "ERROR"));
+            _isLoading = false;
+            errorText = data.errorMessage;
           }
           return Column(
             children: [

@@ -32,10 +32,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
       appBar: AppBar(
         backgroundColor: AppColors.containerFiveColor,
         leading: IconButton(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios,color: Colors.blue,),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
         ),
         title: Text(
           'My Profile'.tr(),
@@ -48,7 +51,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               Navigator.pushNamed(context, SearchPage.id);
             },
             color: Colors.blue,
-            icon: ImageIcon(AssetImage("assets/icons/iconn.png")),
+            icon: const ImageIcon(AssetImage("assets/icons/iconn.png")),
           ),
         ],
       ),
@@ -68,7 +71,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   Widget initUI(MyUser user) {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           Column(
@@ -184,7 +187,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     Navigator.pushNamedAndRemoveUntil(
                         context, AuthPage.id, (r) => false);
                   },
-                  child:  Text(
+                  child: Text(
                     "Sign out".tr(),
                     style: const TextStyle(
                         color: Colors.blue,

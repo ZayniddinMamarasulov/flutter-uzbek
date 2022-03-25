@@ -9,8 +9,9 @@ import '../model/user.dart';
 class AuthViewModel extends ChangeNotifier {
   var _status = AuthStatus.NOT_SIGN_IN;
   var _signInMethod = SignInMethod.EMAIL;
-
+  var _signInStatus = SignInStatus.INITIAL;
   String _errorMessage = "";
+
   MyUser? _currentUser;
   final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _googleUser;
@@ -85,12 +86,15 @@ class AuthViewModel extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
+      _status = AuthStatus.ERROR;
+      _errorMessage = e.toString();
       print("user-collection-exception: $e");
     }
   }
 
   signIn(email, pass) async {
-    // showLoader(true);
+    _status = AuthStatus.LOADING;
+    notifyListeners();
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: pass)
@@ -105,9 +109,13 @@ class AuthViewModel extends ChangeNotifier {
       } else if (e.code == 'wrong-password') {
         _errorMessage = 'Wrong password provided for that user.';
       }
+      _status = AuthStatus.ERROR;
+      notifyListeners();
     } catch (e) {
       // showLoader(false);
       _errorMessage = e.toString();
+      _status = AuthStatus.ERROR;
+      notifyListeners();
     }
   }
 
@@ -135,22 +143,26 @@ class AuthViewModel extends ChangeNotifier {
     _status = AuthStatus.LOADING;
     notifyListeners();
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+    try {
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
 
-    MyUser user = MyUser(
-        id: FirebaseAuth.instance.currentUser?.uid,
-        fullName: googleUser.displayName!,
-        email: googleUser.email,
-        userRole: 'user',
-        userimageUrl: googleUser.photoUrl!);
+      MyUser user = MyUser(
+          id: FirebaseAuth.instance.currentUser?.uid,
+          fullName: googleUser.displayName!,
+          email: googleUser.email,
+          userRole: 'user',
+          userimageUrl: googleUser.photoUrl!);
 
-    saveCredentials(user, credential: credential);
+      saveCredentials(user, credential: credential);
 
+    } catch (e) {
+      print(e.toString());
+    }
     notifyListeners();
   }
 }
@@ -158,3 +170,5 @@ class AuthViewModel extends ChangeNotifier {
 enum AuthStatus { NOT_SIGN_IN, LOADING, COMPLETED, ERROR }
 
 enum SignInMethod { PHONE, EMAIL, GOOGLE }
+
+enum SignInStatus { INITIAL, WAITING, SUCCESS, ERROR }

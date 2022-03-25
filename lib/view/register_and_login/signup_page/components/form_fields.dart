@@ -239,6 +239,9 @@ class _SignUpFormFieldsState extends State<SignUpFormFields> {
     return CustomContainer(
       titleForm: 'Name',
       child: TextFormField(
+        onChanged: (value) {
+          name = value;
+        },
         onSaved: (value) {
           name = value!;
         },
